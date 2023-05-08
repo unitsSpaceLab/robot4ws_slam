@@ -24,7 +24,7 @@ options = {
   num_point_clouds = 1, -- for 2d mapping/slam, it works better without point_clouds
   -- publishing rates on publisher topics 
   lookup_transform_timeout_sec = 0.1,
-  submap_publish_period_sec = 0.3,
+  submap_publish_period_sec = 3e-2,
   pose_publish_period_sec = 5e-3,
   trajectory_publish_period_sec = 30e-3,
   -- consider to modify the following sampling ratios
@@ -40,7 +40,7 @@ MAP_BUILDER.num_background_threads = 4 -- # of cores
 
 TRAJECTORY_BUILDER_2D.min_range = 0.1
 TRAJECTORY_BUILDER_2D.max_range = 20.
-TRAJECTORY_BUILDER_2D.min_z = 0 -- otherwise floor points from pointcloud will be consider as obstacles
+--TRAJECTORY_BUILDER_2D.min_z = 0 -- otherwise floor points from pointcloud will be consider as obstacles
 TRAJECTORY_BUILDER_2D.missing_data_ray_length = 5.
 TRAJECTORY_BUILDER_2D.use_imu_data = false
 TRAJECTORY_BUILDER_2D.use_online_correlative_scan_matching = false
@@ -52,8 +52,14 @@ TRAJECTORY_BUILDER_2D.ceres_scan_matcher.occupied_space_weight = 2
 -- GLOBAL SLAM
 POSE_GRAPH.constraint_builder.min_score = 0.55
 POSE_GRAPH.constraint_builder.global_localization_min_score = 0.8
+POSE_GRAPH.optimization_problem.huber_scale = 1e3
 POSE_GRAPH.optimize_every_n_nodes = 10
 POSE_GRAPH.matcher_translation_weight = 1e5
 POSE_GRAPH.matcher_rotation_weight = 0.0001
+
+POSE_GRAPH.optimization_problem.local_slam_pose_translation_weight = 1
+POSE_GRAPH.optimization_problem.local_slam_pose_rotation_weight = 1
+POSE_GRAPH.optimization_problem.odometry_translation_weight = 1e3
+POSE_GRAPH.optimization_problem.odometry_rotation_weight = 1e3
 
 return options

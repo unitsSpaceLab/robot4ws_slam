@@ -1,0 +1,29 @@
+<!--
+     @author: Marco Giberna
+     @email: marco.giberna@studenti.units.it
+     @email: marcogiberna@gmail.com
+-->
+<launch>
+	<arg name="rviz_configuration" default="-d $(find robot4ws_slam)/configuration_files/rviz/octomap.rviz"/>
+	<arg name="arg_frame_id" default="odom"/>
+	<arg name="arg_cloud_in" default="/Archimede/d435i_camera/depth/color/points"/>
+
+	<node pkg="octomap_server" type="octomap_server_node" name="octomap_server">
+		<param name="resolution" value="0.05" />
+
+		<!-- fixed map frame (set to 'map' if SLAM or localization running!) -->
+        <!-- they have to be called as they are in rviz -->
+		<param name="frame_id" type="string" value="$(arg arg_frame_id)" />
+        <param name="base_frame_id" value="Archimede_base_link" />
+
+		<!-- maximum range to integrate (speedup!) -->
+		<param name="sensor_model/max_range" value="14.0" />
+
+		<!-- data source to integrate (PointCloud2) -->
+		<!-- <remap from="cloud_in" to="/Archimede/d435i_camera/depth/color/points" /> -->
+		<remap from="cloud_in" to="$(arg arg_cloud_in)" />
+	</node>
+
+    <node name="rviz" pkg="rviz" type="rviz" required="true"
+    args= "$(arg rviz_configuration)" />
+</launch>

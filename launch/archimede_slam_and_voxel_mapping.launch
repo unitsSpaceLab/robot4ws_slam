@@ -1,0 +1,27 @@
+<!--
+     @author: Marco Giberna
+     @email: marco.giberna@studenti.units.it
+     @email: marcogiberna@gmail.com
+-->
+
+<launch>
+    <!-- launch cartographer 3D -->
+    <include file="$(find robot4ws_slam)/launch/archimede_cartographer_3dslam.launch">
+        <arg name="launch_rviz" value="false" />
+    </include>
+
+        <!-- launch cartographer 2D -->
+    <!-- <include file="$(find robot4ws_slam)/launch/archimede_cartographer_2dslam.launch">
+        <arg name="launch_rviz" value="false" />
+    </include> -->
+
+
+    <!-- launch octomap  -->
+    <include file="$(find robot4ws_slam)/launch/archimede_octomap.launch">
+        <arg name="arg_frame_id" value="map"/>
+        <arg name="arg_cloud_in" value="/scan_matched_points2"/>
+        <arg name="rviz_configuration" value="-d $(find robot4ws_slam)/configuration_files/rviz/cartographer_and_octomap.rviz"/>
+    </include>
+
+
+</launch>

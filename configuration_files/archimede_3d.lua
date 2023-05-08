@@ -14,7 +14,7 @@ options = {
   odom_frame = "odom", -- not used if provide_odom_frame = false
   provide_odom_frame = false, -- set to false if odom is already provided by another part of the system, otherwise transformation between odom_frame and published_frame will be provided
   publish_frame_projected_to_2d = false,
---  use_pose_extrapolator = true, -- the used version of cartographer doesn't have this flag
+  --use_pose_extrapolator = true, -- the used version of cartographer doesn't have this flag
   use_odometry = true, -- subscribes to nav_msgs/Odometry on the topic “odom”, includes its information on SLAM
   use_nav_sat = false,
   use_landmarks = false,
@@ -39,15 +39,31 @@ options = {
 MAP_BUILDER.use_trajectory_builder_3d = true
 MAP_BUILDER.num_background_threads = 4
 
-TRAJECTORY_BUILDER_3D.num_accumulated_range_data = 50
+TRAJECTORY_BUILDER_3D.num_accumulated_range_data = 2 --if == 1 laser scan can't be exploit
+-- how many step to update trajectory, and therefore to update map->odom
+TRAJECTORY_BUILDER_3D.use_online_correlative_scan_matching = false
+TRAJECTORY_BUILDER_3D.low_resolution_adaptive_voxel_filter.min_num_points = 150
+TRAJECTORY_BUILDER_3D.high_resolution_adaptive_voxel_filter.min_num_points = 200
+--TRAJECTORY_BUILDER_3D.pose_extrapolator.use_imu_based = true
+--TRAJECTORY_BUILDER_3D.imu_based.imu_acceleration_weight = 1.
+--TRAJECTORY_BUILDER_3D.imu_based.imu_rotation_weight = 1.
 
 POSE_GRAPH.optimization_problem.huber_scale = 5e2
-POSE_GRAPH.optimize_every_n_nodes = 10
+POSE_GRAPH.optimize_every_n_nodes = 480 --consider to set it to zero, it seems it gives a lot of problem at each optimization
 POSE_GRAPH.constraint_builder.sampling_ratio = 0.03
 POSE_GRAPH.optimization_problem.ceres_solver_options.max_num_iterations = 10
-POSE_GRAPH.constraint_builder.min_score = 0.62
-POSE_GRAPH.constraint_builder.global_localization_min_score = 0.66
+POSE_GRAPH.constraint_builder.min_score = 0.92
+POSE_GRAPH.constraint_builder.global_localization_min_score = 0.96
 POSE_GRAPH.matcher_translation_weight = 1e5
 POSE_GRAPH.matcher_rotation_weight = 0.0001
+POSE_GRAPH.constraint_builder.log_matches = true
+POSE_GRAPH.optimization_problem.log_solver_summary = true
+POSE_GRAPH.optimization_problem.ceres_solver_options.max_num_iterations = 10
+
+
+POSE_GRAPH.optimization_problem.local_slam_pose_translation_weight = 1e5
+POSE_GRAPH.optimization_problem.local_slam_pose_rotation_weight = 1e5
+POSE_GRAPH.optimization_problem.odometry_translation_weight = 1e5
+POSE_GRAPH.optimization_problem.odometry_rotation_weight = 1e5
 
 return options
