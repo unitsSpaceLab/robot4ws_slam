@@ -4,7 +4,7 @@
 
 Cartographer is a system that provides real-time simultaneous localization and mapping (SLAM) in 2D and 3D across multiple platforms and sensor configurations.
 
-Cartographer subscribes to _/clock_, _/tf_, _/Archimede/scan_ (if used), _/Archimede/odom (if used), _/Archimede/imu_ (if used, necessary for 3D SLAM) and _/Archimede/d435i\_camera/depth/color/points_ (if used).
+Cartographer subscribes to _/clock_, _/tf_, _/Archimede/scan_ (if used), _/Archimede/odom_ (if used), _/Archimede/imu_ (if used, necessary for 3D SLAM) and _/Archimede/d435i\_camera/depth/color/points_ (if used).
 
 Cartographer publishes to _/tf_, _/rosout_, _/submap\_list_, _/trajectory\_node\_list_(array containing ordered xyz of the robot), _/scan\_matched\_points2_, _/landmark\_poses\_list_, _/constraint\_list_. \
 In 2D mode, also _/cartographer\_occupancy\_grid\_node_ runs publishing nav_msgs/OccupancyGrid messages to _/map_, generating an occupancy grid. \
@@ -71,7 +71,9 @@ roslaunch robot4ws_slam archimede_cartographer_3dslam_offline.launch bag_filenam
 
 To change SLAM configuration, by adding on removing some input sensors or to tune the algorithm, edit _/configuration\_files/archimede\_2d.lua_ for 2D SLAM or _/configuration\_files/archimede\_3d.lua_ for 3D SLAM. More parameters to be edited can be found in other _.lua_ files in the _/configuration\_files/backup_ directory. Whereas you find a parameter you'd rather change, copy and paste it inside the _archimede\_2d.lua_ or _archimede\_3d.lua_ configuration file, then edit it appropriately.
 
-Launch Cartographer after launching the rover and its sensors, otherwise an error will occur.\
+Launch Cartographer after launching the rover and its sensors, otherwise an error will occur.
+
+Note: for optimal performance, keep the robot still for 5-10 seconds before moving it. It enhances SLAM abilities.
 
 #### Map Saving
 
