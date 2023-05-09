@@ -49,7 +49,7 @@ TRAJECTORY_BUILDER_3D.high_resolution_adaptive_voxel_filter.min_num_points = 200
 --TRAJECTORY_BUILDER_3D.imu_based.imu_rotation_weight = 1.
 
 POSE_GRAPH.optimization_problem.huber_scale = 5e2
-POSE_GRAPH.optimize_every_n_nodes = 480 --consider to set it to zero, it seems it gives a lot of problem at each optimization
+POSE_GRAPH.optimize_every_n_nodes = 720 --consider to set it to zero, it seems it gives a lot of problem at each optimization
 POSE_GRAPH.constraint_builder.sampling_ratio = 0.03
 POSE_GRAPH.optimization_problem.ceres_solver_options.max_num_iterations = 10
 POSE_GRAPH.constraint_builder.min_score = 0.92
