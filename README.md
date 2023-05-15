@@ -78,6 +78,43 @@ roslaunch robot4ws_slam archimede_cartographer_3dslam_offline.launch bag_filenam
 ```
 The trajectory and .pbstream file will be automatically stopped and created respectively once the bag will have finished playing.
 
+#### 2D Pure Localization
+Given a map previously recorded by cartographer (in form of .pbstream file), it can also perform just localization within the 2D map.
+
+To do it online:
+
+```
+roslaunch robot4ws_slam archimede_cartographer_2dlocalization.launch \
+   load_state_filename:=/path/to/pbstream/file.pbstream 
+```
+
+If you are using a bag file instead:
+
+```
+roslaunch robot4ws_slam archimede_cartographer_2dlocalization_offline.launch \
+   load_state_filename:=/path/to/pbstream/file.pbstream \
+   bag_filename:=/path/to/bag/file.bag
+```
+
+#### 3D Pure Localization
+Given a map previously recorded by cartographer (in form of .pbstream file), it can also perform just localization within the map.
+
+To do it online:
+
+```
+roslaunch robot4ws_slam archimede_cartographer_3dlocalization.launch \
+   load_state_filename:=/path/to/pbstream/file.pbstream 
+```
+
+If you are using a bag file instead:
+
+```
+roslaunch robot4ws_slam archimede_cartographer_3dlocalization_offline.launch \
+   load_state_filename:=/path/to/pbstream/file.pbstream \
+   bag_filename:=/path/to/bag/file.bag
+```
+
+
 #### 3D Point Cloud Reconstruction
 As sensor data come in, the state of a SLAM algorithm such as Cartographer evolves to stay the current best estimate of a robot’s trajectory and surroundings. The most accurate localization and mapping Cartographer can offer is therefore the one obtained when the algorithm finishes. Cartographer can serialize its internal state in a .pbstream file format which is essentially a compressed protobuf file containing a snapshot of the data structures used by Cartographer internally.
 
