@@ -51,12 +51,12 @@ TRAJECTORY_BUILDER_3D.high_resolution_adaptive_voxel_filter.min_num_points = 200
 
 POSE_GRAPH.optimization_problem.huber_scale = 5e2
 POSE_GRAPH.optimize_every_n_nodes = 480 --consider to set it to zero, it seems it gives a lot of problem at each optimization
-POSE_GRAPH.constraint_builder.sampling_ratio = 0.03
+POSE_GRAPH.constraint_builder.sampling_ratio = 0.03 --0.03
 POSE_GRAPH.optimization_problem.ceres_solver_options.max_num_iterations = 10
-POSE_GRAPH.constraint_builder.min_score = 0.92
-POSE_GRAPH.constraint_builder.global_localization_min_score = 0.96
-POSE_GRAPH.matcher_translation_weight = 1e5
-POSE_GRAPH.matcher_rotation_weight = 1e3 --0.0001
+POSE_GRAPH.constraint_builder.min_score = 0.82
+POSE_GRAPH.constraint_builder.global_localization_min_score = 0.86
+POSE_GRAPH.matcher_translation_weight = 5e2
+POSE_GRAPH.matcher_rotation_weight = 1.6e3
 POSE_GRAPH.constraint_builder.log_matches = true
 POSE_GRAPH.optimization_problem.log_solver_summary = true
 --POSE_GRAPH.ceres_scan_matcher_3d.rotation_weight = 4e3

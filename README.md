@@ -60,12 +60,52 @@ roslaunch robot4ws_slam archimede_cartographer_3dslam.launch
 ```
 An rviz is also automatically launched, with an appropriate configuration, to track the mapping process' progress.
 
+To finish the first trajectory. No further data will be accepted on it.
+```
+rosservice call /finish_trajectory 0
+```
+
+Then ask Cartographer to serialize its current state.
+```
+rosservice call /write_state filename: '${HOME}/Downloads/b3-2016-04-05-14-14-00.bag.pbstream'
+```
+
 To perform 3D SLAM from a recorded bag, execute:
 
 ```
 source ~/catkin_ws/devel/setup.bash
 roslaunch robot4ws_slam archimede_cartographer_3dslam_offline.launch bag_filenames:=/path/to/your/bag.bag
 ```
+The trajectory and .pbstream file will be automatically stopped and created respectively once the bag will have finished playing.
+
+#### 3D Point Cloud Reconstruction
+As sensor data come in, the state of a SLAM algorithm such as Cartographer evolves to stay the current best estimate of a robot’s trajectory and surroundings. The most accurate localization and mapping Cartographer can offer is therefore the one obtained when the algorithm finishes. Cartographer can serialize its internal state in a .pbstream file format which is essentially a compressed protobuf file containing a snapshot of the data structures used by Cartographer internally.
+
+To run efficiently in real-time, Cartographer throws most of its sensor data away immediately and only works with a small subset of its input, the mapping used internally (and saved in .pbstream files) is then very rough. However, when the algorithm finishes and a best trajectory is established, it can be recombined a posteriori with the full sensors data to create a high resolution map.
+
+Cartographer makes this kind of recombination possible using archimede_cartographer_3dassets_writer. The assets writer takes as input
+* the original sensors data that has been used to perform SLAM (in a ROS .bag file),
+* a cartographer state captured while performing SLAM on this sensor data (saved in a .pbstream file),
+* the sensor extrinsics (i.e. TF data from the bag or an URDF description),
+* a pipeline configuration, which is defined in a .lua file.
+
+The assets writer runs through the .bag data in batches with the trajectory found in the .pbstream. The pipeline can be used to color, filter and export SLAM point cloud data into a variety of formats. 
+
+To use it, launch cartographer offline with a previously recorded bagfile. This will create a .pbstream file automatically once ended. Launch then archimede_cartographer_3dassets_writer:
+
+```
+roslaunch robot4ws_slam archimede_cartographer_3dassets_writer.launch bag_filenames:=/path/to/bag/file.bag pose_graph_filename:=/path/to/pbstream/file.pbstream
+```
+
+Archimede_cartographer_3dassets_writer gives you in output the maps along XY axes, XZ axes and YZ axes, each of them both in grayscale and color. Moreover, the processed point clouds are stored in .ply and .pcd format. 
+
+To create a octree from the point cloud, install first point_cloud_viewer from its [repository](https://github.com/cartographer-project/point_cloud_viewer). Once installed, you can generate an octree by running from point_cloud_viewer directory(Set as output directory a new empty directory, since a lot of files will be created):
+
+```
+target/release/build_octree /path/to/points.ply--output-directory /path/to/output/directory/
+```
+
+
 
 ### Further Information
 

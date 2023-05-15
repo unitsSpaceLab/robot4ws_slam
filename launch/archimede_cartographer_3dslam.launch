@@ -11,26 +11,10 @@
   <!-- not needed as it is already loaded from gazebo-->
   <!--arg declaration for xacro command-->
   <arg name="model" default="$(find robot4ws_description)/urdf/rover.urdf.xacro"/>
-  <arg name="default_world" default="false"/>
-  <arg name="world_name" default="only_walls.world"/>
-  <!-- <arg name="world_name" default="MSL_Gale_DEM_Mosaic_1m_v3_X_14315-14364_Y_47079-47098_v1.world"/> -->
-  <arg name="world_path_custom" default="$(find robot4ws_description)/urdf/worlds"/> <!--$(find robot4ws_description)/urdf/worlds/step.world-->
 
-  <arg name="use_rviz" default="false"/>
-  <arg name="start_qt_gui" default="false"/>
   <arg name="include_plugins" default="true"/>
   <arg name="include_kinematics_plugin" default="true"/>
   <arg name="include_ros_control" default="false"/>
-  <arg name="pos_x" default="0"/>
-  <arg name="pos_y" default="0"/>
-  <arg name="pos_z" default="0.17"/>
-  <!-- <arg name="pos_z" default="0.30"/> -->
-  <!-- <arg name="pos_z" default="6.009720"/> <!- for MSL_Gale_DEM_Mosaic_1m_v3_X_14315-14364_Y_47079-47098_v1 -->
-  <arg name="pos_roll" default="0"/>
-  <arg name="pos_pitch" default="0"/>
-  <arg name="pos_yaw" default="0"/>
-  <!-- <arg name="pos_pitch" default="0.294121"/> <!- for MSL_Gale_DEM_Mosaic_1m_v3_X_14315-14364_Y_47079-47098_v1 -->
-  <!-- <arg name="pos_yaw" default="0"/> -->
 
   <!-- Model related arguments -->
   <arg name="show_imu" default="false"/>
@@ -47,11 +31,12 @@
      include_kinematics_plugin:=$(arg include_kinematics_plugin) include_ros_control:=$(arg include_ros_control)
      show_cameras:=$(arg show_cameras) visualize_scan:=$(arg show_laser_scan) visualize_imu:=$(arg show_imu)
      visualize_pi_camera:=$(arg show_pi_camera) visualize_realsense:=$(arg show_realsense) rocker_differential:=$(arg rocker_differential)"/>
-
+  
+  
   <!--not needed because also already run by gazebo-->
   <node name="robot_state_publisher" pkg="robot_state_publisher"
     type="robot_state_publisher" />
- <?ignore
+  <?ignore
   ?>
 
 
