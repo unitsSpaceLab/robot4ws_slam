@@ -38,6 +38,7 @@ options = {
 MAP_BUILDER.use_trajectory_builder_2d = true
 MAP_BUILDER.num_background_threads = 4 -- # of cores
 
+TRAJECTORY_BUILDER_2D.num_accumulated_range_data = 2 --if == 1 laser scan can't be exploit
 TRAJECTORY_BUILDER_2D.min_range = 0.1
 TRAJECTORY_BUILDER_2D.max_range = 20.
 --TRAJECTORY_BUILDER_2D.min_z = 0 -- otherwise floor points from pointcloud will be consider as obstacles
@@ -55,7 +56,7 @@ POSE_GRAPH.constraint_builder.global_localization_min_score = 0.8
 POSE_GRAPH.optimization_problem.huber_scale = 1e3
 POSE_GRAPH.optimize_every_n_nodes = 10
 POSE_GRAPH.matcher_translation_weight = 1e5
-POSE_GRAPH.matcher_rotation_weight = 0.0001
+POSE_GRAPH.matcher_rotation_weight = 1 -- 0.0001 default
 
 POSE_GRAPH.optimization_problem.local_slam_pose_translation_weight = 1
 POSE_GRAPH.optimization_problem.local_slam_pose_rotation_weight = 1

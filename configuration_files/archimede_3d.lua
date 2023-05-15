@@ -24,7 +24,7 @@ options = {
   num_point_clouds = 1,
   -- publishing rates on publisher topics 
   lookup_transform_timeout_sec = 0.2, --Timeout in seconds to use for looking up transforms (increase it if it gives lookup warnings, for examples due to different publishing frequencies within the tf_tree)
-  submap_publish_period_sec = 0.3,
+  submap_publish_period_sec = 0.3, -- try to lower it
   pose_publish_period_sec = 5e-3,
   trajectory_publish_period_sec = 30e-3,
   --consider to modify the following sampling ratios
