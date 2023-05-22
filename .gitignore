@@ -57,3 +57,5 @@ CATKIN_IGNORE
 *.xyz
 *.ply
 *.pcd
+*.bag_points.ply
+*.bag_points.pcd
