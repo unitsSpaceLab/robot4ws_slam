@@ -142,6 +142,10 @@ To create a octree from the point cloud, install first point_cloud_viewer from i
 target/release/build_octree /path/to/points.ply--output-directory /path/to/output/directory/
 ```
 
+To launch sdl viewer and visualize the created map:
+```
+target/release/sdl_viewer /path/to/directory/
+```
 
 
 ### Further Information
