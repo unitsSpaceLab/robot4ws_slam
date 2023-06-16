@@ -5,7 +5,7 @@
 -->
 
 <launch>
-
+  <arg name="experimental" default="false"/>
   <arg name="launch_rviz" default="true"/>
 
   <!-- not needed as it is already loaded from gazebo-->
@@ -25,7 +25,25 @@
 
   <arg name="rocker_differential" default="false"/>
    
-  <!--loading .urdf file, which is built from xacro file by means of xacro command--> 
+
+  <?ignore
+  ?>
+
+  <group if="$(arg experimental)">
+  <node name="cartographer_node" pkg="cartographer_ros"
+      type="cartographer_node" args="
+          -configuration_directory $(find robot4ws_slam)/configuration_files
+          -configuration_basename archimede_3d_experimental.lua"
+      output="screen">
+    <remap from="points2" to="/camera/depth/color/points" />
+    <remap from="scan" to="/scan"/>
+    <remap from="imu" to="/camera/imu"/>
+    <remap from="odom" to="/odom"/>
+  </node>
+  </group>
+  <group unless="$(arg experimental)">
+
+    <!--loading .urdf file, which is built from xacro file by means of xacro command--> 
   <param name="robot_description"
     command="$(find xacro)/xacro $(arg model) include_plugins:=$(arg include_plugins)
      include_kinematics_plugin:=$(arg include_kinematics_plugin) include_ros_control:=$(arg include_ros_control)
@@ -36,9 +54,6 @@
   <!--not needed because also already run by gazebo-->
   <node name="robot_state_publisher" pkg="robot_state_publisher"
     type="robot_state_publisher" />
-  <?ignore
-  ?>
-
 
   <node name="cartographer_node" pkg="cartographer_ros"
       type="cartographer_node" args="
@@ -50,6 +65,7 @@
     <remap from="imu" to="/Archimede/imu"/>
     <remap from="odom" to="/Archimede/odom"/>
   </node>
+  </group>
 
   <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"
       type="cartographer_occupancy_grid_node" args="-resolution 0.05" />

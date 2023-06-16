@@ -1,0 +1,22 @@
+<launch>
+  <arg name="multi_robot_name" default=""/>
+
+  <node pkg="rosserial_python" type="serial_node.py" name="rover_ws" output="screen">
+    <param name="port" value="/dev/ttyArchimede"/>
+    <param name="baud" value="115200"/>
+    <param name="tf_prefix" value="$(arg multi_robot_name)"/>
+	<param name="max_wheel_speed" value = "50" type = "int" />
+	<param name="controller_enable" value = "1" type = "int" />
+	<param name="max_turn_radius" value = "1.5"	type = "double" />
+        <remap from="cmd_vel" to="cmd_vel_motors"/>
+
+  </node>
+
+  <!--include file="$(find hls_lfcd_lds_driver)/launch/hlds_laser.launch"/-->
+
+  <node pkg="tf" type="static_transform_publisher" name="footprint_to_base" args="0 0 0.22 0 0 0 /base_footprint /base_link 100"/>
+  <node pkg="tf" type="static_transform_publisher" name="base_to_scan" args="0 0 0.05 0 0 0 /base_link /scan_link 100"/>
+  <node pkg="tf" type="static_transform_publisher" name="base_to_picamera" args="0.125 0 0.0 0 0 3.1416 /base_link /pi_camera_link 100"/>
+  <node pkg="tf" type="static_transform_publisher" name="base_to_stereo_cam" args="0.14 0 0.13 0 0 0 /base_link /camera_link 100"/>
+  <node pkg="tf" type="static_transform_publisher" name="base_to_imu" args="0.05 0 0 0 0 0 base_link imu_link 100"/> 
+</launch>
