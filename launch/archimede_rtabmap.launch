@@ -1,0 +1,40 @@
+<launch>
+
+<arg name= "bag_filename"/>
+<param name="/use_sim_time" value="true" />
+
+<node name="playbag" pkg="rosbag" type="play"
+      args="--clock $(arg bag_filename)" />
+
+<node name="rviz" pkg="rviz" type="rviz" required="true"
+    args="-d $(find robot4ws_slam)/configuration_files/rviz/cartographer.rviz" /> 
+
+
+<node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" args="--Grid/RangeMax 5">
+   <param name="Optimizer/Iterations" type="int" value="50"/>
+   <param name="subscribe_scan" value="false"/>
+   <param name="subscribe_rgb" value="false"/>
+   <param name="subscribe_depth" value="false"/>
+   <param name="subscribe_scan_cloud" value="true"/>
+   <param name="approx_sync" value="true"/>
+   <param name="subscribe_stereo" value="true"/>
+    <param name="subscribe_rgbd" value="false"/>
+    <param name="frame_id" value="base_link"/>
+    <param name="map_frame_id" value="map"/>
+    <param name="odom_frame_id" value=""/>
+    <param name="publish_tf" value="true"/>
+    <param name="config_path" value="/home/ros/catkin_ws/src/archimede_rover/robot4ws_slam/configuration_files/archimede_rtabmap_param.h"/>
+
+   <remap from="rgb/image" to="camera/color/image_raw" />
+   <remap from="rgb/camera_info" to="camera/color/camera_info" />
+   <remap from="depth/image" to="camera/depth/image_rect_raw" /> <!-- Check it-->
+   <remap from="scan_cloud" to="camera/depth/color/points" />
+   <remap from="left/image_rect" to="camera/infra1/image_rect_raw" /> <!-- Check it-->
+   <remap from="right/image_rect" to="camera/infra2/image_rect_raw" /> <!-- Check it-->
+   <remap from="left/camera_info" to="camera/infra1/camera_info" />
+   <remap from="right/camera_info" to="camera/infra2/camera_info" />
+   
+
+</node>
+
+</launch>

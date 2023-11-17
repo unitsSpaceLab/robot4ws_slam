@@ -5,9 +5,13 @@
 -->
 
 <launch>
+    <arg name="experimental" default="false"/>
+    <arg name="bag_filename" default=""/>
     <!-- launch cartographer 3D -->
-    <include file="$(find robot4ws_slam)/launch/archimede_cartographer_3dslam.launch">
+    <include file="$(find robot4ws_slam)/launch/archimede_cartographer_3dslam_offline.launch">
         <arg name="launch_rviz" value="false" />
+        <arg name="experimental" value="$(arg experimental)" />
+        <arg name="bag_filename" value="$(arg bag_filename)" />
     </include>
 
         <!-- launch cartographer 2D -->

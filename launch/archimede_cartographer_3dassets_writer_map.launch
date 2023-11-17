@@ -1,0 +1,36 @@
+<!--
+     @author: Marco Giberna
+     @email: marco.giberna@studenti.units.it
+     @email: marcogiberna@gmail.com
+-->
+
+<launch>
+  <!-- <node name="archimede_base_footprint" pkg="tf" type="static_transform_publisher" args="0 0 0.16 0 0 0 Archimede_foot_print Archimede_base_link 0.01"/> -->
+
+   <arg name="experimental" default="false"/>
+
+  <group if="$(arg experimental)">
+  <node name="cartographer_assets_writer" pkg="cartographer_ros" required="true"
+      type="cartographer_assets_writer" args="
+          -configuration_directory $(find robot4ws_slam)/configuration_files
+          -configuration_basename archimede_assets_writer_map_experimental.lua
+          -urdf_filename $(find robot4ws_description)/urdf/rover.urdf
+          -bag_filenames $(arg bag_filenames)
+          -pose_graph_filename $(arg pose_graph_filename)"
+      output="screen">
+  </node>
+  </group>
+
+  <group unless="$(arg experimental)">
+  <node name="cartographer_assets_writer" pkg="cartographer_ros" required="true"
+      type="cartographer_assets_writer" args="
+          -configuration_directory $(find robot4ws_slam)/configuration_files
+          -configuration_basename archimede_assets_writer_map.lua
+          -urdf_filename $(find robot4ws_description)/urdf/rover.urdf
+          -bag_filenames $(arg bag_filenames)
+          -pose_graph_filename $(arg pose_graph_filename)"
+      output="screen">
+  </node>
+  </group>
+
+</launch>

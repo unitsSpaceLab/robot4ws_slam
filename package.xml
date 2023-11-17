@@ -50,7 +50,15 @@
   <!--   <doc_depend>doxygen</doc_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
 
-
+  <build_depend>roscpp</build_depend>
+  <build_export_depend>roscpp</build_export_depend>
+  <exec_depend>roscpp</exec_depend>
+  <build_depend>libeigen3-dev</build_depend>
+  <exec_depend>libeigen3-dev</exec_depend>
+  <build_depend>grid_map_core</build_depend>
+  <exec_depend>grid_map_core</exec_depend>
+  <build_depend>grid_map_ros</build_depend>
+  <exec_depend>grid_map_ros</exec_depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>

@@ -7,7 +7,20 @@ project(robot4ws_slam)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED)
+find_package(catkin REQUIRED
+    roscpp
+)
+find_package(Eigen3 REQUIRED)
+find_package(octomap REQUIRED)
+find_package(grid_map_core REQUIRED)
+find_package(grid_map_ros REQUIRED)
+
+find_package(catkin REQUIRED COMPONENTS
+  # other dependencies...
+  grid_map_core
+  grid_map_ros
+  grid_map_octomap
+)
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -100,8 +113,10 @@ find_package(catkin REQUIRED)
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES robot4ws_slam
-#  CATKIN_DEPENDS other_catkin_pkg
+  CATKIN_DEPENDS 
 #  DEPENDS system_lib
+    grid_map_core
+    grid_map_ros
 )
 
 ###########
@@ -111,9 +126,13 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
-# ${catkin_INCLUDE_DIRS}
-
+ # include
+ ${catkin_INCLUDE_DIRS}
+ include
+ ${EIGEN3_INCLUDE_DIRS}
+ ${OCTOMAP_INCLUDE_DIRS}
+ ${GRID_MAP_CORE_INCLUDE_DIRS}
+ ${GRID_MAP_ROS_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -201,3 +220,13 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+## Dichiarazione del tuo eseguibile o libreria
+add_executable(archimede_octomap_to_gridmap src/archimede_octomap_to_gridmap.cpp src/OctomapToGridmap.cpp)
+
+
+## Collega il tuo eseguibile alla libreria ROS
+target_link_libraries(archimede_octomap_to_gridmap
+  ${catkin_LIBRARIES} 
+  ${OCTOMAP_LIBRARIES}
+  ${GRID_MAP_CORE_LIBRARIES}
+  ${GRID_MAP_ROS_LIBRARIES})

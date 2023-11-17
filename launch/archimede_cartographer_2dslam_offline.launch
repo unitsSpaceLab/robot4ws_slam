@@ -6,9 +6,12 @@
 
 <launch>
   <param name="/use_sim_time" value="true" />
-  
-  <include file="$(find robot4ws_slam)/launch/archimede_cartographer_2dslam.launch" />
- 
+  <arg name="experimental" default="false"/>
+
+  <include file="$(find robot4ws_slam)/launch/archimede_cartographer_2dslam.launch">
+    <arg name="experimental" value="$(arg experimental)"/>
+  </include>
+
   <node name="playbag" pkg="rosbag" type="play"
       args="--clock $(arg bag_filename)" />
 </launch>

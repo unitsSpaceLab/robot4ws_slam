@@ -39,7 +39,7 @@ options = {
 MAP_BUILDER.use_trajectory_builder_3d = true
 MAP_BUILDER.num_background_threads = 4
 
-TRAJECTORY_BUILDER_3D.num_accumulated_range_data = 2 --if == 1 laser scan can't be exploit -- how many step to update trajectory, and therefore to update map->odom
+TRAJECTORY_BUILDER_3D.num_accumulated_range_data = 10 --if == 1 laser scan can't be exploit -- how many step to update trajectory, and therefore to update map->odom
 TRAJECTORY_BUILDER_3D.use_online_correlative_scan_matching = true --false
 TRAJECTORY_BUILDER_3D.low_resolution_adaptive_voxel_filter.min_num_points = 200 --200
 TRAJECTORY_BUILDER_3D.high_resolution_adaptive_voxel_filter.min_num_points = 150 --150
@@ -56,7 +56,7 @@ TRAJECTORY_BUILDER_3D.ceres_scan_matcher.rotation_weight = 4e2 --4e2
 
 
 
-POSE_GRAPH.optimize_every_n_nodes = 20 --90 --consider to set it to zero, it seems it gives a lot of problem at each optimization
+POSE_GRAPH.optimize_every_n_nodes = 0 --90 --consider to set it to zero, it seems it gives a lot of problem at each optimization
 POSE_GRAPH.matcher_translation_weight = 5e3 --5e2
 POSE_GRAPH.matcher_rotation_weight = 1.6e4 --1.6e3
 

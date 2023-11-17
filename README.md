@@ -44,7 +44,7 @@ To perform 2D slam from a recorded bag, execute:
 
 ```
 source ~/catkin_ws/devel/setup.bash
-roslaunch robot4ws_slam archimede_cartographer_2dslam_offline.launch bag_filenames:=/path/to/your/bag.bag
+roslaunch robot4ws_slam archimede_cartographer_2dslam_offline.launch bag_filename:=/path/to/your/bag.bag
 ```
 
 #### 3D SLAM
@@ -74,7 +74,7 @@ To perform 3D SLAM from a recorded bag, execute:
 
 ```
 source ~/catkin_ws/devel/setup.bash
-roslaunch robot4ws_slam archimede_cartographer_3dslam_offline.launch bag_filenames:=/path/to/your/bag.bag
+roslaunch robot4ws_slam archimede_cartographer_3dslam_offline.launch bag_filename:=/path/to/your/bag.bag
 ```
 The trajectory and .pbstream file will be automatically stopped and created respectively once the bag will have finished playing.
 
@@ -128,7 +128,19 @@ Cartographer makes this kind of recombination possible using archimede_cartograp
 
 The assets writer runs through the .bag data in batches with the trajectory found in the .pbstream. The pipeline can be used to color, filter and export SLAM point cloud data into a variety of formats. 
 
-To use it, launch cartographer offline with a previously recorded bagfile. This will create a .pbstream file automatically once ended. Launch then archimede_cartographer_3dassets_writer:
+To use it, launch cartographer offline with a previously recorded bagfile. This will create a .pbstream file automatically once ended. 
+
+When running as an online node, Cartographer doesn’t know when your bag (or sensor input) ends so you need to use the exposed services to explicitly finish the current trajectory and make Cartographer serialize its current state:
+
+```
+# Finish the first trajectory. No further data will be accepted on it.
+rosservice call /finish_trajectory 0
+
+# Ask Cartographer to serialize its current state.
+rosservice call /write_state "{filename: '/path/to/b3-2016-04-05-14-14-00.bag.pbstream'}"
+```
+
+Launch then archimede_cartographer_3dassets_writer:
 
 ```
 roslaunch robot4ws_slam archimede_cartographer_3dassets_writer.launch bag_filenames:=/path/to/bag/file.bag pose_graph_filename:=/path/to/pbstream/file.pbstream
@@ -176,7 +188,7 @@ Octomap server publishes to _/rosout_, _/projected\_map_ (downprojected 2D occup
 Install OctoMap library
 ```
 sudo apt-get install ros-melodic-octomap*
-```
+```2
 
 ### Usage
 Octomap is not a SLAM algorithm, therefore it needs either odometry or a SLAM process to be running. We have implemented two different versions. The former takes in input just the odometry, the latter it also exploits SLAM performed by cartographer.
