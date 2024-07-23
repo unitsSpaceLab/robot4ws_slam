@@ -1,13 +1,14 @@
 <launch>
 
+<arg name="use_bagfile" default="false"/>
 <arg name="bag_filename"/>
 
 <arg name="record"          default="false"/>
 <arg name="record_filename" default="/home/ros/DLR_test2.bag"/>
 
 <include file="$(find rtabmap_ros)/launch/stereo_mapping.launch">
-    <arg name="rviz"        value="false"/>
-    <arg name="rtabmapviz"  value="true"/>
+    <arg name="rviz"        value="true"/>
+    <arg name="rtabmapviz"  value="false"/>
 
     <arg name="rtabmap_args" value="-d
                                     --Rtabmap/LoopThr 0.11
@@ -27,7 +28,7 @@
 </include>
 
 
-<node name="playbag" pkg="rosbag" type="play" args="--clock $(arg bag_filename) --topics /camera/infra1/camera_info /camera/infra1/image_rect_raw /camera/infra2/camera_info /camera/infra2/image_rect_raw /tf /tf_static /imu">
+<node if="$(arg use_bagfile)" name="playbag" pkg="rosbag" type="play" args="--clock $(arg bag_filename) --topics /camera/infra1/camera_info /camera/infra1/image_rect_raw /camera/infra2/camera_info /camera/infra2/image_rect_raw /tf /tf_static /imu">
     <remap from="/imu" to="/imu/data"/>
 </node>
 
